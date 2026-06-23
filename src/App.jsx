@@ -5,6 +5,9 @@ import ListingForm from './components/ListingForm';
 import ListingGallery from './components/ListingGallery';
 
 export default function App() {
+
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || '';
+
   const [view, setView] = useState('gallery'); // 'gallery' or 'create'
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,7 +27,7 @@ export default function App() {
 
   const checkBackendStatus = async () => {
     try {
-      const res = await fetch('/api/status');
+      const res = await fetch(`${API_BASE}/api/status`);
       if (res.ok) {
         const data = await res.json();
         setBackendStatus(data);
@@ -37,7 +40,7 @@ export default function App() {
   const fetchListings = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/listings');
+      const res = await fetch(`${API_BASE}/api/listings`);
       if (res.ok) {
         const data = await res.json();
         setListings(data);
@@ -66,7 +69,7 @@ export default function App() {
     }, 1200);
 
     try {
-      const res = await fetch('/api/listings/analyze', {
+      const res = await fetch(`${API_BASE}/api/listings/analyze`, {
         method: 'POST',
         body: formData,
       });
@@ -97,7 +100,7 @@ export default function App() {
 
   const handlePublish = async (listingData) => {
     try {
-      const res = await fetch('/api/listings', {
+      const res = await fetch(`${API_BASE}/api/listings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +127,7 @@ export default function App() {
     if (!window.confirm('Are you sure you want to delete this listing?')) return;
     
     try {
-      const res = await fetch(`/api/listings/${id}`, {
+      const res = await fetch(`${API_BASE}/api/listings/${id}`, {
         method: 'DELETE',
       });
 
